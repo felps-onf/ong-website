@@ -3,15 +3,21 @@
    ========================================================================== */
 
 :root {
+    color-scheme: light;
+
     /* --- CORES (12 tokens entre marca, neutros e feedback) --- */
     /* Azul transmite confiança e estabilidade para uma organização social. */
     --color-primary: #0066cc;
     --color-primary-dark: #004c99;
     --color-primary-light: #e6f0fa;
+    --color-primary-text: #004c99;
 
     /* Verde reforça esperança, crescimento e cuidado. */
-    --color-secondary: #28a745;
-    --color-secondary-dark: #1e7e34;
+    --color-secondary: #1e7e34;
+    --color-secondary-dark: #145a2a;
+    --color-success-bg: #e8f5eb;
+    --color-success-text: #145a2a;
+    --color-success-shadow: rgba(30, 126, 52, 0.15);
 
     /* Neutros mantêm leitura confortável e hierarquia de superfícies. */
     --color-neutral-100: #ffffff;
@@ -22,7 +28,26 @@
 
     /* Feedback com contraste suficiente para mensagens de formulário. */
     --color-error: #dc3545;
-    --color-focus: #ffbf00;
+    --color-error-bg: #fbe9eb;
+    --color-error-text: #842029;
+    --color-error-shadow: rgba(220, 53, 69, 0.15);
+    --color-warning: #6b5200;
+    --color-warning-bg: #fff3cd;
+    --color-focus: #111111;
+
+    --color-page-background: var(--color-neutral-100);
+    --color-form-background: var(--color-neutral-100);
+    --color-footer-background: var(--color-neutral-900);
+    --color-footer-text: var(--color-neutral-300);
+    --color-focus-shadow: var(--color-primary-light);
+    --color-placeholder: #666666;
+    --color-chart-grid: rgba(17, 17, 17, 0.18);
+    --color-tooltip-background: #111111;
+    --color-tooltip-text: #ffffff;
+
+    /* --- SCROLLBAR (progressive enhancement — Newly Available) --- */
+    --scrollbar-thumb: var(--color-neutral-300);
+    --scrollbar-track: var(--color-neutral-200);
 
     /* --- TIPOGRAFIA (5 patamares, base 16px) --- */
     --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
@@ -49,15 +74,26 @@
     --box-shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
 }
 
+/* Scrollbar global — progressive enhancement (Baseline Newly Available).
+   scrollbar-width força renderização visível no macOS para que
+   scrollbar-color seja aplicado; sem ele o macOS usa overlay invisível. */
+html {
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
+}
+
 /* Resets básicos para aplicar o Design System imediatamente ao corpo */
 body {
     font-family: var(--font-family-base);
     font-size: var(--font-size-md);
     line-height: var(--line-height-base);
     color: var(--color-neutral-800);
-    background-color: var(--color-neutral-100);
+    background-color: var(--color-page-background);
     margin: 0;
     padding: 0;
+    /* accent-color adapta checkboxes, radios e range ao Design System.
+       Progressive enhancement: browsers sem suporte ignoram silenciosamente. */
+    accent-color: var(--color-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -75,6 +111,23 @@ small { font-size: var(--font-size-sm); }
 :focus-visible {
     outline: 3px solid var(--color-focus);
     outline-offset: 2px;
+}
+
+.skip-link {
+    position: fixed;
+    z-index: 100;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    transform: translateY(calc(-100% - var(--spacing-md)));
+    border-radius: var(--border-radius-sm);
+    background-color: var(--color-neutral-100);
+    color: var(--color-primary-dark);
+    font-weight: 700;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
 }
 
 p {
@@ -143,6 +196,33 @@ header nav a[aria-current="page"] {
     width: 44px;
     height: 44px;
 }
+
+/* --- Toggle de tema claro/escuro --- */
+.theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 0;
+    border-radius: var(--border-radius-sm);
+    color: var(--color-neutral-100);
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.theme-toggle svg {
+    width: 22px;
+    height: 22px;
+    pointer-events: none;
+}
+
+/* Classe utilitária — oculta o ícone que não corresponde ao tema activo. */
+.theme-icon--hidden {
+    display: none;
+}
+
 
 .hamburger-icon {
     display: grid;
@@ -303,7 +383,7 @@ main > * {
     border-left: 4px solid var(--color-error);
     border-radius: var(--border-radius-sm);
     background-color: var(--color-error-bg);
-    color: #842029;
+    color: var(--color-error-text);
 }
 
 /* --- Seções --- */
@@ -365,7 +445,7 @@ fieldset {
 legend {
     font-weight: 700;
     font-size: var(--font-size-lg);
-    color: var(--color-primary-dark);
+    color: var(--color-primary-text);
     padding: 0 var(--spacing-sm);
 }
 
@@ -414,10 +494,16 @@ textarea {
     font-family: var(--font-family-base);
     font-size: var(--font-size-md);
     color: var(--color-neutral-800);
-    background-color: var(--color-neutral-100);
+    background-color: var(--color-form-background);
     box-sizing: border-box;
     transition: border-color 0.2s ease;
     margin-bottom: var(--spacing-md);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-placeholder);
+    opacity: 1;
 }
 
 input:focus,
@@ -425,7 +511,7 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px var(--color-primary-light);
+    box-shadow: 0 0 0 3px var(--color-focus-shadow);
 }
 
 .form-feedback:not(:empty) {
@@ -434,13 +520,13 @@ textarea:focus {
     border-left: 4px solid var(--color-primary);
     border-radius: var(--border-radius-sm);
     background-color: var(--color-primary-light);
-    color: var(--color-primary-dark);
+    color: var(--color-primary-text);
 }
 
 .form-feedback--error:not(:empty) {
     border-color: var(--color-error);
     background-color: var(--color-error-bg);
-    color: #842029;
+    color: var(--color-error-text);
 }
 
 .field-feedback {
@@ -455,7 +541,7 @@ input[aria-invalid="true"],
 select[aria-invalid="true"],
 textarea[aria-invalid="true"] {
     border-color: var(--color-error);
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+    box-shadow: 0 0 0 3px var(--color-error-shadow);
 }
 
 input[type="text"]:user-valid,
@@ -464,8 +550,8 @@ input[type="date"]:user-valid,
 input[type="tel"]:user-valid,
 select:user-valid,
 textarea:user-valid {
-    border-color: var(--color-secondary);
-    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+    border-color: var(--color-success-text);
+    box-shadow: 0 0 0 3px var(--color-success-shadow);
 }
 
 input[type="text"]:user-invalid,
@@ -475,7 +561,7 @@ input[type="tel"]:user-invalid,
 select:user-invalid,
 textarea:user-invalid {
     border-color: var(--color-error);
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+    box-shadow: 0 0 0 3px var(--color-error-shadow);
 }
 
 /* --- Botões --- */
@@ -510,8 +596,8 @@ button[type="submit"]:disabled {
 
 /* --- Footer --- */
 footer {
-    background-color: var(--color-neutral-900);
-    color: var(--color-neutral-300);
+    background-color: var(--color-footer-background);
+    color: var(--color-footer-text);
     text-align: center;
     padding: var(--spacing-lg) var(--spacing-xxl);
     font-size: var(--font-size-sm);
@@ -571,5 +657,222 @@ footer {
 
     header {
         padding-inline: max(var(--spacing-xxl), calc((100vw - 1320px) / 2));
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --color-primary-light: #18364f;
+        --color-primary-text: #acd5ff;
+        --color-success-bg: #153a23;
+        --color-success-text: #a1e8b1;
+        --color-success-shadow: rgba(109, 220, 142, 0.24);
+        --color-neutral-200: #202b36;
+        --color-neutral-300: #637383;
+        --color-neutral-800: #e2e8f0;
+        --color-neutral-900: #f8fafc;
+        --color-error: #ff7380;
+        --color-error-bg: #46252b;
+        --color-error-text: #ffc2c8;
+        --color-error-shadow: rgba(255, 117, 128, 0.24);
+        --color-warning: #ffe08a;
+        --color-warning-bg: #443915;
+        --color-focus: #ffec70;
+        --color-page-background: #111820;
+        --color-form-background: #1b2631;
+        --color-footer-background: #080d12;
+        --color-footer-text: #dce3eb;
+        --color-focus-shadow: rgba(75, 144, 207, 0.55);
+        --color-placeholder: #b2bdc9;
+        --color-chart-grid: rgba(226, 232, 240, 0.3);
+        --color-tooltip-background: #080d12;
+        --color-tooltip-text: #f8fafc;
+        --box-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+        --scrollbar-thumb: #637383;
+        --scrollbar-track: #111820;
+    }
+}
+
+@media (prefers-contrast: more) {
+    :root {
+        --color-primary: #004b9b;
+        --color-primary-dark: #003366;
+        --color-primary-light: #e6f0fa;
+        --color-primary-text: #003366;
+        --color-secondary: #145a2a;
+        --color-secondary-dark: #0b431f;
+        --color-success-bg: #e0f3e5;
+        --color-success-text: #0b5426;
+        --color-error: #b00020;
+        --color-error-bg: #fff0f2;
+        --color-error-text: #750014;
+        --color-warning: #5c4300;
+        --color-warning-bg: #fff1b8;
+        --color-neutral-200: #ffffff;
+        --color-neutral-300: #414141;
+        --color-neutral-800: #111111;
+        --color-neutral-900: #000000;
+        --color-page-background: #ffffff;
+        --color-form-background: #ffffff;
+        --color-footer-background: #000000;
+        --color-footer-text: #ffffff;
+        --color-focus: #000000;
+        --color-focus-shadow: #004b9b;
+        --color-placeholder: #333333;
+        --color-chart-grid: #333333;
+        --color-tooltip-background: #000000;
+        --color-tooltip-text: #ffffff;
+        --box-shadow-sm: none;
+    }
+
+    :focus-visible {
+        outline-width: 4px;
+        outline-offset: 3px;
+    }
+
+    header nav a,
+    .dropdown-menu a {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+    }
+
+    fieldset,
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="tel"],
+    select,
+    textarea {
+        border-width: 2px;
+    }
+
+    button[type="submit"] {
+        border: 2px solid currentColor;
+    }
+}
+
+@media (prefers-color-scheme: dark) and (prefers-contrast: more) {
+    :root {
+        --color-primary-light: #142f4b;
+        --color-primary-text: #c3e2ff;
+        --color-success-bg: #0d2e19;
+        --color-success-text: #bbf5c8;
+        --color-error: #ff8993;
+        --color-error-bg: #2b0c12;
+        --color-error-text: #ffd0d5;
+        --color-warning: #fff0a3;
+        --color-warning-bg: #332800;
+        --color-neutral-200: #000000;
+        --color-neutral-300: #ffffff;
+        --color-neutral-800: #ffffff;
+        --color-neutral-900: #ffffff;
+        --color-page-background: #000000;
+        --color-form-background: #000000;
+        --color-footer-background: #000000;
+        --color-footer-text: #ffffff;
+        --color-focus: #fff200;
+        --color-focus-shadow: #fff200;
+        --color-placeholder: #ffffff;
+        --color-chart-grid: #ffffff;
+        --color-tooltip-background: #ffffff;
+        --color-tooltip-text: #000000;
+        --box-shadow-sm: none;
+    }
+}
+
+@media (forced-colors: active) {
+    :focus-visible {
+        outline: 3px solid Highlight;
+        outline-offset: 3px;
+    }
+
+    .skip-link,
+    .form-feedback:not(:empty),
+    .spa-route-error {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+
+    input[aria-invalid="true"],
+    select[aria-invalid="true"],
+    textarea[aria-invalid="true"] {
+        border: 2px solid Mark;
+    }
+}
+
+/* ==========================================================================
+   OVERRIDE MANUAL DE TEMA (via data-theme no <html>)
+   Selectores de elemento têm maior especificidade que @media queries,
+   portanto sobrepõem-se sem necessidade de !important.
+   ========================================================================== */
+
+/* Força modo escuro mesmo quando o sistema usa modo claro. */
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --color-primary-light: #18364f;
+    --color-primary-text: #acd5ff;
+    --color-success-bg: #153a23;
+    --color-success-text: #a1e8b1;
+    --color-success-shadow: rgba(109, 220, 142, 0.24);
+    --color-neutral-200: #202b36;
+    --color-neutral-300: #637383;
+    --color-neutral-800: #e2e8f0;
+    --color-neutral-900: #f8fafc;
+    --color-error: #ff7380;
+    --color-error-bg: #46252b;
+    --color-error-text: #ffc2c8;
+    --color-error-shadow: rgba(255, 117, 128, 0.24);
+    --color-warning: #ffe08a;
+    --color-warning-bg: #443915;
+    --color-focus: #ffec70;
+    --color-page-background: #111820;
+    --color-form-background: #1b2631;
+    --color-footer-background: #080d12;
+    --color-footer-text: #dce3eb;
+    --color-focus-shadow: rgba(75, 144, 207, 0.55);
+    --color-placeholder: #b2bdc9;
+    --color-chart-grid: rgba(226, 232, 240, 0.3);
+    --color-tooltip-background: #080d12;
+    --color-tooltip-text: #f8fafc;
+    --box-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+    --scrollbar-thumb: #637383;
+    --scrollbar-track: #111820;
+}
+
+/* Força modo claro quando o sistema usa modo escuro.
+   Só é necessário neste contexto; fora dele o :root já é claro. */
+@media (prefers-color-scheme: dark) {
+    html[data-theme="light"] {
+        color-scheme: light;
+        --color-primary-light: #e6f0fa;
+        --color-primary-text: #004c99;
+        --color-success-bg: #e8f5eb;
+        --color-success-text: #145a2a;
+        --color-success-shadow: rgba(30, 126, 52, 0.15);
+        --color-neutral-200: #f8f9fa;
+        --color-neutral-300: #dee2e6;
+        --color-neutral-800: #333333;
+        --color-neutral-900: #111111;
+        --color-error: #dc3545;
+        --color-error-bg: #fbe9eb;
+        --color-error-text: #842029;
+        --color-error-shadow: rgba(220, 53, 69, 0.15);
+        --color-warning: #6b5200;
+        --color-warning-bg: #fff3cd;
+        --color-focus: #111111;
+        --color-page-background: #ffffff;
+        --color-form-background: #ffffff;
+        --color-footer-background: #111111;
+        --color-footer-text: #dee2e6;
+        --color-focus-shadow: #e6f0fa;
+        --color-placeholder: #666666;
+        --color-chart-grid: rgba(17, 17, 17, 0.18);
+        --color-tooltip-background: #111111;
+        --color-tooltip-text: #ffffff;
+        --box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+        --scrollbar-thumb: #dee2e6;
+        --scrollbar-track: #f8f9fa;
     }
 }

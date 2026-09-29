@@ -59,7 +59,10 @@ document.querySelectorAll("header nav").forEach((nav) => {
         if (event.key === "Escape") {
             closeMenu();
             closeDropdowns();
-            menuToggle.focus();
+            const focusTarget = mobileBreakpoint.matches
+                ? menuToggle
+                : nav.querySelector(".dropdown-toggle");
+            focusTarget?.focus();
         }
     });
 
@@ -74,4 +77,27 @@ document.querySelectorAll("header nav").forEach((nav) => {
         closeMenu();
         closeDropdowns();
     });
+});
+
+document.addEventListener("click", (event) => {
+    const skipLink = event.target.closest(".skip-link[href^='#']");
+
+    if (!skipLink) {
+        return;
+    }
+
+    const target = document.querySelector(skipLink.getAttribute("href"));
+
+    if (!target) {
+        return;
+    }
+
+    event.preventDefault();
+    window.history.replaceState(
+        window.history.state,
+        "",
+        `${window.location.pathname}${window.location.search}${skipLink.hash}`
+    );
+    target.focus({ preventScroll: true });
+    target.scrollIntoView();
 });

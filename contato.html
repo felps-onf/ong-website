@@ -9,14 +9,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Anti-FOUC: aplica data-theme antes do primeiro render para evitar
+         flash de cor errada quando o utilizador tem override guardado. -->
+    <script>
+        (function () {
+            try {
+                var s = localStorage.getItem("ong-esperanca:color-theme:v1");
+                if (s) {
+                    var t = JSON.parse(s).theme;
+                    if (t === "dark" || t === "light") {
+                        document.documentElement.setAttribute("data-theme", t);
+                    }
+                }
+            } catch (e) {}
+        })();
+    </script>
     <script src="assets/js/navigation.js" defer></script>
     <script src="assets/js/spa-router.js" defer></script>
     <script src="assets/js/project-templates.js" defer></script>
     <script src="assets/js/form-interactions.js" defer></script>
     <script src="assets/js/local-preferences.js" defer></script>
     <script src="assets/js/impact-chart.js" defer></script>
+    <script src="assets/js/theme-toggle.js" defer></script>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Pular para o conteúdo principal</a>
     <header>
         <nav aria-label="Navegação principal">
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Abrir menu de navegação">
@@ -37,11 +54,25 @@
                 </li>
                 <li><a href="contato.html" aria-current="page">Contato</a></li>
                 <li><a href="cadastro.html">Cadastro</a></li>
+                <li>
+                    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Activar modo escuro">
+                        <svg class="theme-icon-sun theme-icon--hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
         <section aria-labelledby="contato-title">
             <h1 id="contato-title">Fale Conosco</h1>
             <p>Tem dúvidas, quer ser voluntário ou fazer uma doação? Preencha o formulário abaixo.</p>
