@@ -92,14 +92,24 @@ header {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-header nav ul {
+header nav {
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.nav-list {
     list-style: none;
     padding: 0;
+    margin: 0;
     display: flex;
+    align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     gap: var(--spacing-lg);
+}
+
+.nav-list > li {
+    position: relative;
 }
 
 header nav a {
@@ -115,6 +125,160 @@ header nav a {
 header nav a:hover,
 header nav a[aria-current="page"] {
     background-color: var(--color-primary-dark);
+}
+
+.nav-toggle,
+.dropdown-toggle {
+    color: var(--color-neutral-100);
+    background: transparent;
+    border: 0;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+}
+
+.nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+}
+
+.hamburger-icon {
+    display: grid;
+    gap: 5px;
+    width: 22px;
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 2px;
+    background-color: currentColor;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle[aria-expanded="true"] .hamburger-icon span:first-child {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .hamburger-icon span:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.has-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.dropdown-toggle {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+}
+
+.dropdown-icon {
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.dropdown-toggle[aria-expanded="true"] .dropdown-icon {
+    margin-top: 4px;
+    transform: rotate(225deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 0;
+    display: none;
+    min-width: 240px;
+    margin: 0;
+    padding: var(--spacing-sm);
+    list-style: none;
+    background-color: var(--color-primary-dark);
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--box-shadow-sm);
+}
+
+.has-dropdown.is-open > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+}
+
+@media (max-width: 767px) {
+    header {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    header nav {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: var(--spacing-sm);
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    .nav-list {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .nav-list.is-open {
+        display: flex;
+    }
+
+    .nav-list > li {
+        width: 100%;
+    }
+
+    .nav-list > li:not(.has-dropdown) > a,
+    .has-dropdown > a {
+        display: block;
+    }
+
+    .has-dropdown {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .has-dropdown > a {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .dropdown-toggle {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .dropdown-menu {
+        position: static;
+        grid-column: 1 / -1;
+        min-width: 0;
+        padding: 0 0 var(--spacing-sm) var(--spacing-md);
+        box-shadow: none;
+    }
 }
 
 /* --- Layout Principal --- */
@@ -176,6 +340,30 @@ label {
     color: var(--color-neutral-800);
 }
 
+form > div,
+fieldset > div {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.contribution-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.contribution-option {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: 0;
+}
+
+.contribution-option input {
+    margin: 0;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="date"],
@@ -203,6 +391,26 @@ textarea:focus {
     box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
+input[type="text"]:user-valid,
+input[type="email"]:user-valid,
+input[type="date"]:user-valid,
+input[type="tel"]:user-valid,
+select:user-valid,
+textarea:user-valid {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+}
+
+input[type="text"]:user-invalid,
+input[type="email"]:user-invalid,
+input[type="date"]:user-invalid,
+input[type="tel"]:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+
 /* --- Botões --- */
 button[type="submit"] {
     background-color: var(--color-secondary);
@@ -214,11 +422,23 @@ button[type="submit"] {
     font-size: var(--font-size-md);
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover:not(:disabled) {
     background-color: var(--color-secondary-dark);
+}
+
+button[type="submit"]:active:not(:disabled) {
+    background-color: var(--color-secondary-dark);
+    transform: translateY(1px);
+}
+
+button[type="submit"]:disabled {
+    background-color: var(--color-neutral-300);
+    color: var(--color-neutral-800);
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 /* --- Footer --- */
