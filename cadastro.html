@@ -10,6 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/navigation.js" defer></script>
+    <script src="assets/js/spa-router.js" defer></script>
+    <script src="assets/js/project-templates.js" defer></script>
+    <script src="assets/js/form-interactions.js" defer></script>
+    <script src="assets/js/local-preferences.js" defer></script>
+    <script src="assets/js/impact-chart.js" defer></script>
 </head>
 <body>
     <header>
@@ -41,7 +46,7 @@
             <h1>Cadastro de Voluntários e Doadores</h1>
             <p>Junte-se a nós! Preencha o formulário abaixo com seus dados para formalizar seu vínculo com a ONG Esperança.</p>
 
-            <form action="#" method="post">
+            <form action="#" method="post" data-interactive-form novalidate>
                 <fieldset>
                     <legend>Dados Pessoais</legend>
 
@@ -126,6 +131,7 @@
                 </fieldset>
 
                 <button type="submit">Finalizar Cadastro</button>
+                <p class="form-feedback" data-form-feedback role="status" aria-live="polite" aria-atomic="true"></p>
             </form>
         </article>
     </main>

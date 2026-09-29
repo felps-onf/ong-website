@@ -10,6 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/navigation.js" defer></script>
+    <script src="assets/js/spa-router.js" defer></script>
+    <script src="assets/js/project-templates.js" defer></script>
+    <script src="assets/js/form-interactions.js" defer></script>
+    <script src="assets/js/local-preferences.js" defer></script>
+    <script src="assets/js/impact-chart.js" defer></script>
 </head>
 <body>
     <header>
@@ -41,23 +46,42 @@
             <h1>Nossos Projetos Sociais</h1>
             <p>Conheça as iniciativas que mantemos ativas com o apoio de nossos doadores e voluntários.</p>
 
-            <section aria-labelledby="educacao-title">
-                <h2 id="educacao-title">Programa de Educação Cidadã</h2>
-                <figure>
-                    <img src="assets/images/aula-informatica.jpg" alt="Adolescentes focados interagindo com computadores em nosso laboratório de informática durante o curso profissionalizante">
-                </figure>
-                <p>Oferecemos reforço escolar e cursos profissionalizantes para jovens de baixa renda.</p>
-                
-                <article aria-labelledby="curso-info-title">
-                    <h3 id="curso-info-title">Curso de Informática Básica</h3>
-                    <p>Focado em incluir digitalmente adolescentes e prepará-los para o primeiro emprego.</p>
-                </article>
-            </section>
+            <div class="project-card-list" data-project-list aria-live="polite"></div>
 
-            <section aria-labelledby="saude-title">
-                <h2 id="saude-title">Caravana da Saúde</h2>
-                <p>Levamos atendimento médico e odontológico gratuito para áreas remotas.</p>
-            </section>
+            <template id="project-card-template">
+                <section class="project-card" aria-labelledby="">
+                    <h2 data-project-title></h2>
+                    <figure data-project-figure hidden>
+                        <img data-project-image alt="">
+                    </figure>
+                    <p data-project-description></p>
+                    <article data-project-detail hidden>
+                        <h3 data-project-detail-title></h3>
+                        <p data-project-detail-description></p>
+                    </article>
+                </section>
+            </template>
+
+            <script type="application/json" id="project-data">
+                [
+                    {
+                        "id": "educacao-title",
+                        "title": "Programa de Educação Cidadã",
+                        "image": "assets/images/aula-informatica.jpg",
+                        "imageAlt": "Adolescentes focados interagindo com computadores durante um curso profissionalizante",
+                        "description": "Oferecemos reforço escolar e cursos profissionalizantes para jovens de baixa renda.",
+                        "detail": {
+                            "title": "Curso de Informática Básica",
+                            "description": "Focado em incluir digitalmente adolescentes e prepará-los para o primeiro emprego."
+                        }
+                    },
+                    {
+                        "id": "saude-title",
+                        "title": "Caravana da Saúde",
+                        "description": "Levamos atendimento médico e odontológico gratuito para áreas remotas."
+                    }
+                ]
+            </script>
         </article>
 
         <article aria-labelledby="engajamento-title">

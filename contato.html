@@ -10,6 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/navigation.js" defer></script>
+    <script src="assets/js/spa-router.js" defer></script>
+    <script src="assets/js/project-templates.js" defer></script>
+    <script src="assets/js/form-interactions.js" defer></script>
+    <script src="assets/js/local-preferences.js" defer></script>
+    <script src="assets/js/impact-chart.js" defer></script>
 </head>
 <body>
     <header>
@@ -41,7 +46,7 @@
             <h1 id="contato-title">Fale Conosco</h1>
             <p>Tem dúvidas, quer ser voluntário ou fazer uma doação? Preencha o formulário abaixo.</p>
 
-            <form action="#" method="post">
+            <form action="#" method="post" data-interactive-form novalidate>
                 <div>
                     <label for="nome">Nome completo:</label>
                     <input type="text" id="nome" name="nome" required>
@@ -55,6 +60,7 @@
                     <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
                 </div>
                 <button type="submit">Enviar Mensagem</button>
+                <p class="form-feedback" data-form-feedback role="status" aria-live="polite" aria-atomic="true"></p>
             </form>
         </section>
     </main>

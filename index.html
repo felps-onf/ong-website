@@ -10,6 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/navigation.js" defer></script>
+    <script src="assets/js/spa-router.js" defer></script>
+    <script src="assets/js/project-templates.js" defer></script>
+    <script src="assets/js/form-interactions.js" defer></script>
+    <script src="assets/js/local-preferences.js" defer></script>
+    <script src="assets/js/impact-chart.js" defer></script>
 </head>
 <body>
     <header>
@@ -56,6 +61,17 @@
                 <section aria-labelledby="resultados-recentes-title">
                     <h3 id="resultados-recentes-title">Resultados Recentes</h3>
                     <p>No último ano, entregamos 10 mil cestas básicas e realizamos 500 atendimentos médicos.</p>
+                        <figure class="impact-chart" aria-labelledby="impact-chart-caption">
+                            <figcaption id="impact-chart-caption">Ações realizadas no último ano</figcaption>
+                            <canvas id="impact-chart" role="img" aria-label="Gráfico de barras com 10 mil cestas básicas entregues e 500 atendimentos médicos realizados"></canvas>
+                        </figure>
+                        <script type="application/json" id="impact-chart-data">
+                            {
+                                "labels": ["Cestas básicas", "Atendimentos médicos"],
+                                "values": [10000, 500],
+                                "units": ["cestas entregues", "atendimentos realizados"]
+                            }
+                        </script>
                 </section>
             </section>
         </article>
